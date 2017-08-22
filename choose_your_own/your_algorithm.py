@@ -133,7 +133,7 @@ for n in range(1,10):
 from sklearn.neighbors import KNeighborsClassifier
 n = 10
 l = 10
-print("Best KKN, {} Neighbors, {} leaf size  = ".format(n,l))
+print("Best KKN, {} Neighbors, {} leaf size".format(n,l))
 # we define our classifier:
 clf = KNeighborsClassifier(n_neighbors=n,
                            weights='distance', 

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+    #!/usr/bin/python
 
 """
     Starter code for the regression mini-project.
@@ -22,6 +22,7 @@ dictionary = pickle.load( open("../final_project/final_project_dataset_modified.
 ### list the features you want to look at--first item in the 
 ### list will be the "target" feature
 features_list = ["bonus", "salary"]
+#features_list = ["bonus", "long_term_incentive"]
 data = featureFormat( dictionary, features_list, remove_any_zeroes=True)
 target, features = targetFeatureSplit( data )
 
@@ -29,19 +30,20 @@ target, features = targetFeatureSplit( data )
 from sklearn.cross_validation import train_test_split
 feature_train, feature_test, target_train, target_test = train_test_split(features, target, test_size=0.5, random_state=42)
 train_color = "b"
-test_color = "b"
-
-
+test_color = "r"
 
 ### Your regression goes here!
 ### Please name it reg, so that the plotting code below picks it up and 
 ### plots it correctly. Don't forget to change the test_color above from "b" to
 ### "r" to differentiate training points from test points.
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression()
+reg.fit(feature_train, target_train)
 
-
-
-
-
+print("slope: ",reg.coef_)
+print("intercept: ",reg.intercept_)
+print("r-squared test: ",reg.score(feature_test, target_test))
+print("r-squared train: ",reg.score(feature_train, target_train))
 
 
 
@@ -64,6 +66,15 @@ try:
     plt.plot( feature_test, reg.predict(feature_test) )
 except NameError:
     pass
+# Let's add a little hack
+reg.fit(feature_test, target_test)
+plt.plot(feature_train, reg.predict(feature_train), color="b")
+print("slope: ",reg.coef_)
+print("intercept: ",reg.intercept_)
+print("r-squared test: ",reg.score(feature_train, target_train))
+print("r-squared train: ",reg.score(feature_test, target_test))
+
+# Let's add a little hack
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()

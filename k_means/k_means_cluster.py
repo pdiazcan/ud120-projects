@@ -48,19 +48,37 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
-feature_3 = "total_payments"
+#feature_3 = "total_payments"
 
 poi  = "poi"
-features_list = [poi, feature_1, feature_2, feature_3]
+#features_list = [poi, feature_1, feature_2, feature_3]
+features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+finance_features_bk = numpy.array(finance_features)
+finance_features = numpy.array(finance_features)
+salary = finance_features[:,0]
+ex_stok = finance_features[:,1]
+salary = [min(salary),200000.0,max(salary)]
+ex_stok = [min(ex_stok),1000000.0,max(ex_stok)]
+rescaled_salary = scaler.fit_transform(salary)
+rescaled_stock = scaler.fit_transform(ex_stok)
+print "salary: ", rescaled_salary
+print "exercised_stock_options: ", rescaled_stock
+
+finance_features[:,0] = scaler.fit_transform(finance_features[:,0])
+finance_features[:,1] = scaler.fit_transform(finance_features[:,1])
 
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
 ### for f1, f2, _ in finance_features:
 ### (as it's currently written, the line below assumes 2 features)
-for f1, f2, f3 in finance_features:
+#for f1, f2, f3 in finance_features:
+for f1, f2 in finance_features:
     plt.scatter( f1, f2 )
 plt.show()
 
